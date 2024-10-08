@@ -12,7 +12,7 @@
 
 [Telegram channel](https://t.me/+vEc_2Kodc145MWFi)
 
-Human Languages - English, Russian, Uzbek
+Human Languages - English, Russian, Uzbek.
 
 Technologies: Python, Django, DjangoRestFramework, Celery, Redis, Git.
 Programs and Tools: Pycharm Professional, Postman, Chrome, Pomotroid.
