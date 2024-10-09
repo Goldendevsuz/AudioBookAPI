@@ -18,7 +18,7 @@ Technologies: Python, Django, DjangoRestFramework, Celery, Redis, Git.
 Programs and Tools: Pycharm Professional, Postman, Chrome, Pomotroid.
 
 Links branch - main <-
-Main branch - goldendev/dev/mpv
+Main branch - [goldendev/dev/mpv](https://github.com/Goldendevsuz/AudioBookAPI/tree/goldendev/dev/mpv)
 
 My branches will be {goldendev}/{status}/{feature-or-type}
 
