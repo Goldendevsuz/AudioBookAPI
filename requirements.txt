@@ -1,0 +1,26 @@
+# Common requirements
+Django
+djangorestframework
+djoser
+pillow
+psycopg2-binary
+django-environ
+django-debug-toolbar
+drf-spectacular
+drf-material
+django-redis
+djangorestframework-simplejwt
+django-ratelimit
+drf-spectacular-sidecar
+icecream
+celery
+drf_social_oauth2
+django-cors-headers
+django-jazzmin
+django-extensions
+firebase-admin
+django-storages
+watchdog
+django-celery-results
+flower
+django-celery-beat
