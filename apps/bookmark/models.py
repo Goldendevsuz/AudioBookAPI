@@ -1,10 +1,10 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-from icecream import ic
+
 from apps.book.models import Book
-from django.core.exceptions import ValidationError
 
 
 class AbstractBookmark(TimeStampedModel):

@@ -2,6 +2,7 @@
 
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested.routers import NestedSimpleRouter
+
 from .views import CustomUserViewSet, UserCategoryViewSet, UserBookViewSet
 
 # Root router - no need to register `users/` here, it's handled in the base urls

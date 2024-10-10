@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -19,16 +18,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='audiobookbookmark',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_bookmarks', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_bookmarks',
+                                    to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='ebookbookmark',
             name='book',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_bookmarks', to='book.book'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_bookmarks',
+                                    to='book.book'),
         ),
         migrations.AddField(
             model_name='ebookbookmark',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_bookmarks', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_bookmarks',
+                                    to=settings.AUTH_USER_MODEL),
         ),
     ]

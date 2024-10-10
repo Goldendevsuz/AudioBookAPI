@@ -2,6 +2,7 @@ import os
 
 from celery import shared_task
 from icecream import ic
+
 from apps.base.firebase_storage import upload_to_firebase
 from .models import Book
 

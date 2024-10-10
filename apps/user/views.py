@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model
 from djoser.views import UserViewSet
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from icecream import ic
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from .models import UserCategory, UserBook
 from .serializers import UserCategorySerializer, UserBookSerializer

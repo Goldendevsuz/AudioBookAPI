@@ -14,6 +14,7 @@ class AudiobookBookmarkAdmin(BaseAdmin):
 
 admin.site.register(AudiobookBookmark, AudiobookBookmarkAdmin)
 
+
 # @admin.register(AudiobookBookmark)
 class AudiobookBookmarkAdmin(admin.ModelAdmin):
     # This ensures the validation is run when saving from the admin interface
@@ -21,5 +22,6 @@ class AudiobookBookmarkAdmin(admin.ModelAdmin):
         # The clean method will be called before saving the object
         obj.clean()  # Ensures the model-level validation is applied
         super().save_model(request, obj, form, change)
+
 
 admin.site.register(EbookBookmark, EbookBookmarkAdmin)

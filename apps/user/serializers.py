@@ -28,8 +28,8 @@ class UserCategorySerializer(serializers.ModelSerializer):
         model = UserCategory
         fields = ['id', 'category']
 
-class UserBookSerializer(serializers.ModelSerializer):
 
+class UserBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserBook
         fields = ['id', 'book']
