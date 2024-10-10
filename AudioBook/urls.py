@@ -32,6 +32,7 @@ api_urls = [
     path('books/', include('apps.book.urls')),
     path('authors/', include('apps.author.urls')),
     path('chapters/', include('apps.chapter.urls')),
+    path('bookmarks/', include('apps.bookmark.urls')),
 ]
 
 spectacular_urls = [
@@ -45,3 +46,4 @@ urlpatterns += api_urls
 urlpatterns += spectacular_urls
 
 urlpatterns += static(local.MEDIA_URL, document_root=local.MEDIA_ROOT)
+urlpatterns += static(local.STATIC_URL, document_root=local.STATIC_ROOT)

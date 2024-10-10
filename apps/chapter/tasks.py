@@ -1,7 +1,10 @@
 import os
+
 from celery import shared_task
-from .models import Book, Chapter
+
 from apps.base.firebase_storage import upload_to_firebase
+from .models import Book, Chapter
+
 
 @shared_task(bind=True)
 def upload_files_to_firebase(self, file_field, file_type, isbn, folder='audios', subfolder=None, chapter_pk=None):

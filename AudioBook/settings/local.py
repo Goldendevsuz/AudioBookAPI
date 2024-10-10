@@ -73,6 +73,7 @@ LOCAL_APPS = [
     'apps.book.apps.BookConfig',
     'apps.chapter.apps.ChapterConfig',
     'apps.author.apps.AuthorConfig',
+    'apps.bookmark.apps.BookmarkConfig',
 ]
 
 INSTALLED_APPS += LOCAL_APPS

@@ -1,13 +1,11 @@
 import sys
 from datetime import datetime
 
+from AudioBookAPI.AudioBookAPI.celery import app as celery_app
 from celery.signals import worker_init
-
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils import autoreload
-
-from AudioBookAPI.AudioBookAPI.celery import app as celery_app
 
 
 class Command(BaseCommand):

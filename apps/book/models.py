@@ -2,10 +2,10 @@ import logging
 
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django_extensions.db.models import TimeStampedModel
-
+from icecream import ic
 from apps.author.models import Author
 from apps.category.models import Category
 
@@ -20,6 +20,11 @@ class Book(TimeStampedModel):
     summary = models.TextField(max_length=3000, unique=True)
     isbn = models.CharField(max_length=13, unique=True, validators=[MinLengthValidator(13)])
 
+    # Adding pages count field for ebooks with validators for range 1-1000
+    pages_count = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(1000)],
+        help_text="Total number of pages in the ebook (must be between 1 and 1000)"
+    )
     poster_url = models.URLField(null=True, blank=True)
     cover_url = models.URLField(null=True, blank=True)
     ebook_url = models.URLField(null=True, blank=True)
@@ -33,26 +38,35 @@ class Book(TimeStampedModel):
 
 
 # Pre-save signal for uploading files
-@receiver(pre_save, sender=Book)
+@receiver(post_save, sender=Book)
 def upload_files(sender, instance, **kwargs):
+    ic("Try")
     try:
         from .tasks import upload_files_to_firebase
 
         if instance.poster and (not instance.poster_url or any(
                 error in instance.poster_url for error in ["TimeoutError", "409 PATCH", "Read timed out"])):
+            ic("1")
             upload_files_to_firebase.delay(file_field=instance.poster.path, file_type='poster', isbn=instance.isbn,
                                            folder='audiobooks', subfolder='posters')
+            ic("2")
 
         if instance.cover and not instance.cover_url or any(
                 error in instance.cover_url for error in ["TimeoutError", "409 PATCH", "Read timed out"]):
             upload_files_to_firebase.delay(file_field=instance.cover.path, file_type='cover', isbn=instance.isbn,
                                            folder='audiobooks', subfolder='covers')
-
+        ic("3")
         if instance.ebook and not instance.ebook_url or any(
                 error in instance.ebook_url for error in ["TimeoutError", "409 PATCH", "Read timed out"]):
             upload_files_to_firebase.delay(file_field=instance.ebook.path, file_type='ebook', isbn=instance.isbn,
                                            folder='audiobooks', subfolder='ebooks')
-
+        ic("All")
+        ic(instance.poster)
+        ic(instance.poster_url)
+        ic(instance.cover)
+        ic(instance.cover_url)
+        ic(instance.ebook)
+        ic(instance.ebook_url)
     except ImportError as e:
         logger.error(f"Failed to import tasks module: {e}")
     except Exception as e:
