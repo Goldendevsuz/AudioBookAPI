@@ -27,13 +27,14 @@ urlpatterns = [
 ]
 
 api_urls = [
+    path('users/', include('apps.user.urls')),
     path('notification/', include('apps.notification.urls')),
     path('categories/', include('apps.category.urls')),
     path('books/', include('apps.book.urls')),
     path('authors/', include('apps.author.urls')),
     path('chapters/', include('apps.chapter.urls')),
     path('bookmarks/', include('apps.bookmark.urls')),
-    path('users/', include('apps.user.urls')),
+    path('book_pages/', include('apps.book_page.urls')),
 ]
 
 spectacular_urls = [
