@@ -4,7 +4,7 @@
 
 [Admin dashboard](http://localhost:8000/admin/)
 
-[Swagger API Testing](http://localhost:8000/swagger/) or [Redoc API Docs](http://localhost:8000/swagger/)
+[Swagger API Testing](http://localhost:8000/swagger/) or [Redoc API Docs](http://localhost:8000/redoc/)
 
 [Flower Tasks](http://localhost:5555/)
 
@@ -17,8 +17,9 @@ Human Languages - English, Russian, Uzbek.
 Technologies: Python, Django, DjangoRestFramework, Celery, Redis, Git.
 Programs and Tools: Pycharm Professional, Postman, Chrome, Pomotroid.
 
-Links branch - main <-
-Main branch - [goldendev/dev/mpv](https://github.com/Goldendevsuz/AudioBookAPI/tree/goldendev/dev/mpv)
+Links info branch - main <-
+
+Main branch - [goldendev/dev/mpv/main](https://github.com/Goldendevsuz/AudioBookAPI/tree/goldendev/dev/mvp/main)
 
 My branches will be {goldendev}/{status}/{feature-or-type}
 
