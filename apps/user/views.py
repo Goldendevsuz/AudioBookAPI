@@ -4,9 +4,10 @@ from icecream import ic
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
-from .models import UserCategory
-from .serializers import UserCategorySerializer
+from .models import UserCategory, UserBook
+from .serializers import UserCategorySerializer, UserBookSerializer
 
 User = get_user_model()
 
@@ -53,6 +54,29 @@ class CustomUserViewSet(UserViewSet):
         )
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name='user_id', location=OpenApiParameter.PATH, required=True, type=int)
+    ]
+)
 class UserCategoryViewSet(viewsets.ModelViewSet):
     queryset = UserCategory.objects.all()
     serializer_class = UserCategorySerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        return UserCategory.objects.filter(user_id=user_id)
+
+
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name='user_id', location=OpenApiParameter.PATH, required=True, type=int),
+    ]
+)
+class UserBookViewSet(viewsets.ModelViewSet):
+    queryset = UserBook.objects.all()
+    serializer_class = UserBookSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        return UserBook.objects.filter(user_id=user_id)

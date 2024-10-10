@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.utils.html import format_html
 
 from apps.base.admin import BaseAdmin
-from apps.user.models import UserCategory
+from apps.user.models import UserCategory, UserBook
 
 User = get_user_model()
 
@@ -26,5 +26,10 @@ class UserCategoryAdmin(BaseAdmin):
     list_display = ('user', 'category')
 
 
+class UserBookAdmin(BaseAdmin):
+    list_display = ('user', 'book')
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(UserCategory, UserCategoryAdmin)
+admin.site.register(UserBook, UserBookAdmin)

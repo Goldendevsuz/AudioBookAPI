@@ -24,3 +24,4 @@ watchdog
 django-celery-results
 flower
 django-celery-beat
+drf-nested-routers

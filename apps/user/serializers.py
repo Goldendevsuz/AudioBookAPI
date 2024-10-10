@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
-from apps.user.models import UserCategory
+from apps.user.models import UserCategory, UserBook
 
 User = get_user_model()
 
@@ -26,4 +26,10 @@ class CustomUserSerializer(UserSerializer, CustomUserBaseSerializer):
 class UserCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserCategory
-        fields = '__all__'
+        fields = ['id', 'category']
+
+class UserBookSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserBook
+        fields = ['id', 'book']
