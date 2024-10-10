@@ -25,6 +25,26 @@ class CustomUserViewSet(UserViewSet):
         elif request.method == "DELETE":
             return self.destroy(request, *args, **kwargs)
 
+    @extend_schema(
+        responses={200: UserBookSerializer(many=True)},
+        description="Retrieve and search the books for the currently logged-in user"
+    )
+    @action(detail=False, methods=["get"], url_path="me/books")
+    def get_my_books(self, request):
+        user = request.user
+        query = request.query_params.get('search', None)
+        user_books = UserBook.objects.filter(user=user)
+
+        if query:
+            user_books = user_books.filter(
+                book__title__icontains=query
+            ) | user_books.filter(
+                book__author__name__icontains=query
+            )
+
+        serializer = UserBookSerializer(user_books, many=True)
+        return Response(serializer.data)
+
     def partial_update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         if 'image' in request.FILES:
@@ -76,7 +96,11 @@ class UserCategoryViewSet(viewsets.ModelViewSet):
 class UserBookViewSet(viewsets.ModelViewSet):
     queryset = UserBook.objects.all()
     serializer_class = UserBookSerializer
+    search_fields = ['book__title', 'book__author__name']  # Fields to search
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']
-        return UserBook.objects.filter(user_id=user_id)
+        user_id = self.kwargs.get('user_id')
+        queryset = UserBook.objects.filter(user_id=user_id)
+
+        # You can further customize the queryset here
+        return queryset

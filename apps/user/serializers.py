@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
+from apps.book.models import Book
 from apps.user.models import UserCategory, UserBook
 
 User = get_user_model()
@@ -29,7 +30,17 @@ class UserCategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'category']
 
 
+class BookSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source='author.name', read_only=True)
+
+    class Meta:
+        model = Book  # Make sure the Book model is correctly imported
+        fields = ['id', 'title', 'author_name', 'poster_url']
+
+
 class UserBookSerializer(serializers.ModelSerializer):
+    book = BookSerializer()
+
     class Meta:
         model = UserBook
         fields = ['id', 'book']
