@@ -1,5 +1,6 @@
 import logging
 
+from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from django.db import models
 from django.db.models.signals import post_save
@@ -7,8 +8,10 @@ from django.dispatch import receiver
 from django_extensions.db.models import TimeStampedModel
 from icecream import ic
 
+from AudioBook.settings import local as settings
 from apps.author.models import Author
 from apps.category.models import Category
+User = get_user_model()
 
 logger = logging.getLogger(__name__)
 
@@ -72,3 +75,14 @@ def upload_files(sender, instance, **kwargs):
         logger.error(f"Failed to import tasks module: {e}")
     except Exception as e:
         logger.error(f"Error during pre-save signal for book {instance.isbn}: {str(e)}")
+
+class BookReview(TimeStampedModel):
+    book = models.ForeignKey(Book, related_name='reviews', on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="reviews")
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    comment = models.TextField(max_length=1000, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created']

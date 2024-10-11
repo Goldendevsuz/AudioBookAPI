@@ -10,7 +10,7 @@ User = get_user_model()
 
 
 class AbstractBookmark(TimeStampedModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(class)s_bookmarks")
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="%(class)s_bookmarks")
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="%(class)s_bookmarks")
 
     class Meta:

@@ -35,7 +35,6 @@ api_urls = [
     path('chapters/', include('apps.chapter.urls')),
     path('bookmarks/', include('apps.bookmark.urls')),
     path('book_pages/', include('apps.book_page.urls')),
-    path('reviews/', include('apps.review.urls')),
 ]
 
 spectacular_urls = [

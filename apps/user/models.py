@@ -1,9 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 
-from apps.book.models import Book
+# from apps.book.models import Book
 from apps.category.models import Category
 from apps.user.validators import validate_image
 
@@ -68,11 +69,11 @@ class UserCategory(TimeStampedModel):
 
 
 class UserBook(TimeStampedModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    book = models.ForeignKey('book.Book', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('user', 'book')
 
     def __str__(self):
-        return f'{self.user.username} - {self.book.title}'
+        return f'{self.user.email} - {self.book.title}'
