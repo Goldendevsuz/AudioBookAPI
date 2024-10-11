@@ -118,4 +118,4 @@ GitHub.sublime-settings
 playground/
 auth.log
 media/
-credentials/
+credentials/serviceAccountKey.json
