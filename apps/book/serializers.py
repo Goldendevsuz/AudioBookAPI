@@ -1,10 +1,21 @@
 from rest_framework import serializers
-
-from apps.book.models import Book
+from django.utils.timezone import now
+from apps.book.models import Book, BookReview
 
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = '__all__'
-        # exclude = ('poster', 'cover', 'ebook',)
+
+class BookReviewSerializer(serializers.ModelSerializer):
+    user_image = serializers.ImageField(source='user.image', read_only=True)
+    user_full_name = serializers.CharField(source='user.full_name', read_only=True)
+    days_since_created = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BookReview
+        fields = ['id', 'user_image', 'user_full_name', 'rating', 'days_since_created', 'comment']
+
+    def get_days_since_created(self, obj):
+        return (now() - obj.created).days

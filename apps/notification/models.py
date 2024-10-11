@@ -8,7 +8,7 @@ User = get_user_model()
 
 
 class Notification(TimeStampedModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='notifications')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')

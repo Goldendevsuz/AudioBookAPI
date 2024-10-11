@@ -67,10 +67,10 @@ THIRD_APPS = [
 
 LOCAL_APPS = [
     'apps.user.apps.UserConfig',
+    'apps.book.apps.BookConfig',
     'apps.category.apps.CategoryConfig',
     'apps.notification.apps.NotificationConfig',
     'apps.subscription.apps.SubscriptionConfig',
-    'apps.book.apps.BookConfig',
     'apps.chapter.apps.ChapterConfig',
     'apps.author.apps.AuthorConfig',
     'apps.bookmark.apps.BookmarkConfig',

@@ -1,4 +1,4 @@
-from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -6,9 +6,11 @@ from django_extensions.db.models import TimeStampedModel
 
 from apps.book.models import Book
 
+User = get_user_model()
+
 
 class AbstractBookmark(TimeStampedModel):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="%(class)s_bookmarks")
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="%(class)s_bookmarks")
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="%(class)s_bookmarks")
 
     class Meta:

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from apps.base.admin import BaseAdmin
-from apps.book.models import Book
+from apps.book.models import Book, BookReview
 
 
 class BookAdmin(BaseAdmin):
@@ -11,3 +11,9 @@ class BookAdmin(BaseAdmin):
 
 
 admin.site.register(Book, BookAdmin)
+
+class BookReviewAdmin(BaseAdmin):
+    list_display = [f.name for f in BookReview._meta.fields]
+
+
+admin.site.register(BookReview, BookReviewAdmin)
