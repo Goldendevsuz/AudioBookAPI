@@ -5,6 +5,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.db.models import Count, Avg
 
 from .models import Book, BookReview, LatestSearch
 from .pagination import BookReviewPagination
@@ -96,3 +97,48 @@ class NewReleasesAPIView(APIView):
         latest_books = Book.objects.filter(release_date__lte=timezone.now()).order_by('-release_date')[:5]
         serializer = BookSerializer(latest_books, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class TrendingBooksAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        # Fetch books based on reviews
+        trending_books = Book.objects.annotate(
+            reviews_count=Count('reviews'),
+            avg_rating=Avg('reviews__rating')
+        ).filter(
+            reviews_count__gte=1
+        ).order_by('-reviews_count', '-avg_rating')[:5]
+
+        # Collect book IDs that are already selected to prevent duplicates
+        trending_book_ids = [book.id for book in trending_books]
+
+        # If fewer than 5 books found, fetch more based on search history
+        if len(trending_books) < 5:
+            additional_books = Book.objects.annotate(
+                search_count=Count('latestsearch')
+            ).filter(
+                search_count__gte=1
+            ).exclude(id__in=trending_book_ids)  # Exclude books already in trending_books
+            additional_books = additional_books.order_by('-search_count')[:5 - len(trending_books)]
+
+            # Add these books to trending_books
+            trending_books = list(trending_books) + list(additional_books)
+            trending_book_ids += [book.id for book in additional_books]  # Update IDs
+
+        # If still fewer than 5 books, fallback to recently added books (by release date)
+        if len(trending_books) < 5:
+            fallback_books = Book.objects.exclude(id__in=trending_book_ids).order_by('-release_date')[
+                             :5 - len(trending_books)]
+            trending_books = list(trending_books) + list(fallback_books)
+
+        # Prepare the response data
+        data = [{
+            "title": book.title,
+            "author": book.author.name,
+            "cover": book.cover_url,
+            "rating": getattr(book, 'avg_rating', None),
+            "reviews_count": getattr(book, 'reviews_count', 0),
+            "search_count": getattr(book, 'search_count', 0)
+        } for book in trending_books]
+
+        return Response(data)
