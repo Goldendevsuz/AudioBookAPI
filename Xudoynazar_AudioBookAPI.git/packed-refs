@@ -1,0 +1,9 @@
+# pack-refs with: peeled fully-peeled sorted 
+1c06e320ddb2c5380f810a82c8992ea4262175fe refs/heads/goldendev/dev/mpv
+33555190a7c4ae16080e1a957a56683180e8e247 refs/heads/goldendev/dev/mvp/book_page-app
+0b03b103730a926448dc43ef5a93227961263f70 refs/heads/goldendev/dev/mvp/bookmark-app
+95c9a90830f32396c4dfce65f73781d3bde665b2 refs/heads/goldendev/dev/mvp/main
+13bedfa452f1f698fa10301cfb584aa315aa246a refs/heads/goldendev/dev/mvp/review-app
+85675da76453bc20ac9eb320257771253fb6f7c0 refs/heads/goldendev/dev/mvp/share-chapter-audio
+ab99c0cbec0729fa3a90f3ae966851d7e1bcf247 refs/heads/goldendev/dev/mvp/user-books
+3614dccd58fc6c5ebac8d3ad3deed1c442e1931c refs/heads/main
