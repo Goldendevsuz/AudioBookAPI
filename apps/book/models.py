@@ -86,3 +86,10 @@ class BookReview(TimeStampedModel):
 
     class Meta:
         ordering = ['-created']
+
+class LatestSearch(TimeStampedModel):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['created']  # Orders by the most recent first
