@@ -7,7 +7,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -20,8 +19,10 @@ class Migration(migrations.Migration):
             name='LatestSearch',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
+                ('created',
+                 django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
+                ('modified',
+                 django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
             ],
             options={
                 'ordering': ['created'],
@@ -31,13 +32,20 @@ class Migration(migrations.Migration):
             name='Book',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
+                ('created',
+                 django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
+                ('modified',
+                 django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
                 ('title', models.CharField(max_length=255, unique=True)),
-                ('rate', models.FloatField(validators=[django.core.validators.MinValueValidator(0.1), django.core.validators.MaxValueValidator(5.0)])),
+                ('rate', models.FloatField(validators=[django.core.validators.MinValueValidator(0.1),
+                                                       django.core.validators.MaxValueValidator(5.0)])),
                 ('summary', models.TextField(max_length=3000, unique=True)),
-                ('isbn', models.CharField(max_length=13, unique=True, validators=[django.core.validators.MinLengthValidator(13)])),
-                ('pages_count', models.PositiveSmallIntegerField(help_text='Total number of pages in the ebook (must be between 1 and 1000)', validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(1000)])),
+                ('isbn', models.CharField(max_length=13, unique=True,
+                                          validators=[django.core.validators.MinLengthValidator(13)])),
+                ('pages_count', models.PositiveSmallIntegerField(
+                    help_text='Total number of pages in the ebook (must be between 1 and 1000)',
+                    validators=[django.core.validators.MinValueValidator(1),
+                                django.core.validators.MaxValueValidator(1000)])),
                 ('release_date', models.DateField()),
                 ('poster_url', models.URLField(blank=True, null=True)),
                 ('cover_url', models.URLField(blank=True, null=True)),
@@ -45,7 +53,8 @@ class Migration(migrations.Migration):
                 ('poster', models.FileField(blank=True, null=True, upload_to='audiobooks/posters/')),
                 ('cover', models.FileField(blank=True, null=True, upload_to='audiobooks/covers/')),
                 ('ebook', models.FileField(blank=True, null=True, upload_to='audiobooks/ebooks/')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='books', to='author.author')),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='books',
+                                             to='author.author')),
                 ('categories', models.ManyToManyField(related_name='books', to='category.category')),
             ],
             options={
@@ -57,11 +66,15 @@ class Migration(migrations.Migration):
             name='BookReview',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
-                ('rating', models.PositiveSmallIntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
+                ('created',
+                 django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
+                ('modified',
+                 django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
+                ('rating', models.PositiveSmallIntegerField(validators=[django.core.validators.MinValueValidator(1),
+                                                                        django.core.validators.MaxValueValidator(5)])),
                 ('comment', models.TextField(blank=True, max_length=1000, null=True)),
-                ('book', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='book.book')),
+                ('book', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews',
+                                           to='book.book')),
             ],
             options={
                 'ordering': ['-created'],

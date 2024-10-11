@@ -7,7 +7,6 @@ from apps.book.views import BookViewSet, BookReviewViewSet, search_books, NewRel
 # Root router for books
 router = DefaultRouter()
 router.register(r'', BookViewSet, basename='books')  # This handles /books/
-# router.register(r'new-releases', NewReleasesAPIView.as_view(), basename='new-releases')
 
 # Nested router for BookReviews related to a specific book
 book_reviews_router = NestedSimpleRouter(router, r'', lookup='book')
