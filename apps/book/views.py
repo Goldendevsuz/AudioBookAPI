@@ -1,10 +1,13 @@
-from datetime import timezone
+from django.utils.timezone import now
+from django.utils import timezone
+from rest_framework.views import APIView
+from rest_framework import status
 
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from icecream import ic
 from .models import Book, BookReview, LatestSearch
 from .pagination import BookReviewPagination
 from .serializers import BookSerializer, BookReviewSerializer
@@ -89,9 +92,10 @@ def search_books(request):
     })
 
 
-class NewReleasesViewSet(viewsets.ViewSet):
-    def list(self, request):
-        # Fetch the latest released audiobooks
+class NewReleasesAPIView(APIView):
+    def get(self, request):
+        # Fetch the latest released books by release_date
         latest_books = Book.objects.filter(release_date__lte=timezone.now()).order_by('-release_date')[:5]
         serializer = BookSerializer(latest_books, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
