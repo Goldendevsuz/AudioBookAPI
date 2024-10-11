@@ -1,3 +1,4 @@
+from django.db.models import Count, Avg
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import status
@@ -5,7 +6,6 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.db.models import Count, Avg
 
 from .models import Book, BookReview, LatestSearch
 from .pagination import BookReviewPagination
