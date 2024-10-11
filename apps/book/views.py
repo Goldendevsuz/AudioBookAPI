@@ -1,7 +1,10 @@
+from datetime import timezone
+
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+
 from .models import Book, BookReview, LatestSearch
 from .pagination import BookReviewPagination
 from .serializers import BookSerializer, BookReviewSerializer
@@ -11,6 +14,7 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     search_fields = ['title', 'author__name', 'categories__name', 'summary']
+
 
 class BookReviewViewSet(viewsets.ModelViewSet):
     queryset = BookReview.objects.all()
@@ -83,3 +87,11 @@ def search_books(request):
         'search_results': search_results_data,
         'latest_searches': latest_searches_data
     })
+
+
+class NewReleasesViewSet(viewsets.ViewSet):
+    def list(self, request):
+        # Fetch the latest released audiobooks
+        latest_books = Book.objects.filter(release_date__lte=timezone.now()).order_by('-release_date')[:5]
+        serializer = BookSerializer(latest_books, many=True)
+        return Response(serializer.data)

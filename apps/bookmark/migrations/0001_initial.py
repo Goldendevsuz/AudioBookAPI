@@ -7,7 +7,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -19,9 +18,13 @@ class Migration(migrations.Migration):
             name='EbookBookmark',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
-                ('page', models.PositiveSmallIntegerField(help_text="Total number of pages in the ebook (must be between 1 and the book's total pages)", validators=[django.core.validators.MinValueValidator(1)])),
+                ('created',
+                 django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
+                ('modified',
+                 django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
+                ('page', models.PositiveSmallIntegerField(
+                    help_text="Total number of pages in the ebook (must be between 1 and the book's total pages)",
+                    validators=[django.core.validators.MinValueValidator(1)])),
             ],
             options={
                 'ordering': ['-created'],
@@ -32,11 +35,16 @@ class Migration(migrations.Migration):
             name='AudiobookBookmark',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
+                ('created',
+                 django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, verbose_name='created')),
+                ('modified',
+                 django_extensions.db.fields.ModificationDateTimeField(auto_now=True, verbose_name='modified')),
                 ('chapter', models.PositiveIntegerField()),
-                ('position', models.PositiveIntegerField(help_text='Position in the chapter in seconds.', validators=[django.core.validators.MinValueValidator(1)])),
-                ('book', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_bookmarks', to='book.book')),
+                ('position', models.PositiveIntegerField(help_text='Position in the chapter in seconds.',
+                                                         validators=[django.core.validators.MinValueValidator(1)])),
+                ('book',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_bookmarks',
+                                   to='book.book')),
             ],
             options={
                 'ordering': ['-created'],

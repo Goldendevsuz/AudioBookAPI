@@ -1,10 +1,12 @@
 from rest_framework import viewsets, pagination
-from rest_framework.response import Response
+
 from .models import BookPage
 from .serializers import BookPageSerializer
 
+
 class BookPagePagination(pagination.PageNumberPagination):
     page_size = 1
+
 
 class BookPageViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = BookPage.objects.all()

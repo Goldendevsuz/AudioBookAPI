@@ -1,9 +1,11 @@
-from django.core.management.base import BaseCommand
-from apps.book_page.models import BookPage
-from apps.book.models import Book
-from django.core.exceptions import ObjectDoesNotExist
-import pdfplumber
 import os
+
+import pdfplumber
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.management.base import BaseCommand
+
+from apps.book.models import Book
+from apps.book_page.models import BookPage
 
 
 class Command(BaseCommand):

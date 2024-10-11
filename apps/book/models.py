@@ -8,9 +8,9 @@ from django.dispatch import receiver
 from django_extensions.db.models import TimeStampedModel
 from icecream import ic
 
-from AudioBook.settings import local as settings
 from apps.author.models import Author
 from apps.category.models import Category
+
 User = get_user_model()
 
 logger = logging.getLogger(__name__)
@@ -29,6 +29,7 @@ class Book(TimeStampedModel):
         validators=[MinValueValidator(1), MaxValueValidator(1000)],
         help_text="Total number of pages in the ebook (must be between 1 and 1000)"
     )
+    release_date = models.DateField()
     poster_url = models.URLField(null=True, blank=True)
     cover_url = models.URLField(null=True, blank=True)
     ebook_url = models.URLField(null=True, blank=True)
@@ -76,6 +77,7 @@ def upload_files(sender, instance, **kwargs):
     except Exception as e:
         logger.error(f"Error during pre-save signal for book {instance.isbn}: {str(e)}")
 
+
 class BookReview(TimeStampedModel):
     book = models.ForeignKey(Book, related_name='reviews', on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="reviews")
@@ -86,6 +88,7 @@ class BookReview(TimeStampedModel):
 
     class Meta:
         ordering = ['-created']
+
 
 class LatestSearch(TimeStampedModel):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
