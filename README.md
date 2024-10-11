@@ -24,3 +24,4 @@ Main branch - [goldendev/dev/mpv/main](https://github.com/Goldendevsuz/AudioBook
 My branches will be {goldendev}/{status}/{feature-or-type}
 
 Your branch example - {your-github-username}/{status}/{feature-or-type}
+.
