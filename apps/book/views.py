@@ -9,6 +9,7 @@ from .serializers import BookSerializer, BookReviewSerializer
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    search_fields = ['title', 'author__name', 'categories__name', 'summary']
 
 # @extend_schema(
 #     parameters=[

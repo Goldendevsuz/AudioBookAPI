@@ -4,9 +4,11 @@ from apps.book.models import Book, BookReview
 
 
 class BookSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source='author.name', read_only=True)
     class Meta:
         model = Book
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ['poster_url', 'cover_url', 'title', 'author_name']
 
 class BookReviewSerializer(serializers.ModelSerializer):
     user_image = serializers.ImageField(source='user.image', read_only=True)
