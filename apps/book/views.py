@@ -10,12 +10,71 @@ from rest_framework.views import APIView
 from .models import Book, BookReview, LatestSearch
 from .pagination import BookReviewPagination
 from .serializers import BookSerializer, BookReviewSerializer
+from ..author.models import Author
 
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    search_fields = ['title', 'author__name', 'categories__name', 'summary']
+    search_fields = ['title', 'author__name', 'categories__name', 'summary', 'tags__name']
+
+    def create(self, request, *args, **kwargs):
+        author_name = request.data.get('author_name')
+
+        if not author_name:
+            return Response({'error': 'Author name is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            author = Author.objects.get(name=author_name)
+        except Author.DoesNotExist:
+            return Response({'error': 'Author not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        book_data = {
+            'title': request.data.get('title'),
+            'author': author,
+            'rate': request.data.get('rate'),
+            'pages_count': request.data.get('pages_count'),
+            'release_date': request.data.get('release_date'),
+            'poster_url': request.data.get('poster_url'),
+            'cover_url': request.data.get('cover_url')
+        }
+
+        book = Book.objects.create(**book_data)
+
+        tags = request.data.get('tags', [])
+        book.tags.add(*tags)
+
+        return Response(BookSerializer(book).data, status=status.HTTP_201_CREATED)
+
+    def put(self, request, *args, **kwargs):
+        instance = self.get_object()
+        author_name = request.data.get('author_name')
+
+        if author_name:
+            try:
+                author = Author.objects.get(name=author_name)
+                instance.author = author
+            except Author.DoesNotExist:
+                return Response({'error': 'Author not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        book_data = {
+            'title': request.data.get('title', instance.title),
+            'rate': request.data.get('rate', instance.rate),
+            'pages_count': request.data.get('pages_count', instance.pages_count),
+            'release_date': request.data.get('release_date', instance.release_date),
+            'poster_url': request.data.get('poster_url', instance.poster_url),
+            'cover_url': request.data.get('cover_url', instance.cover_url)
+        }
+
+        for attr, value in book_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+
+        tags = request.data.get('tags', [])
+        instance.tags.set(tags)
+
+        return Response(BookSerializer(instance).data, status=status.HTTP_200_OK)
 
 
 class BookReviewViewSet(viewsets.ModelViewSet):
