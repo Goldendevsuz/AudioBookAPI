@@ -9,17 +9,8 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
+        # fields = '__all__'
         fields = ['poster_url', 'cover_url', 'title', 'author_name', 'release_date']
-
-
-class BookDetailSerializer(BookSerializer):
-    tags = serializers.SerializerMethodField()
-
-    class Meta(BookSerializer.Meta):
-        fields = BookSerializer.Meta.fields + ['tags']
-
-    def get_tags(self, obj):
-        return [tag.name for tag in obj.tags.all()]
 
 
 class BookReviewSerializer(serializers.ModelSerializer):
