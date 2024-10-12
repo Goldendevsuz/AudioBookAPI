@@ -20,5 +20,5 @@ re-django:
 	pip3 uninstall Django -y && pip3 install Django
 cru:
 	python manage.py createsuperuser --email=goldendevuz@gmail.com --birth_date=2005-01-24
-	#make cru email=goldendevuz@gmail.com birth=2005-01-24
-	#python manage.py createsuperuser --email $(email) --birth_date=$(birth)
+#make cru email=goldendevuz@gmail.com birth=2005-01-24
+#python manage.py createsuperuser --email $(email) --birth_date=$(birth)

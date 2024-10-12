@@ -9,13 +9,18 @@ from rest_framework.views import APIView
 
 from .models import Book, BookReview, LatestSearch
 from .pagination import BookReviewPagination
-from .serializers import BookSerializer, BookReviewSerializer
+from .serializers import BookSerializer, BookReviewSerializer, BookDetailSerializer
 
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    search_fields = ['title', 'author__name', 'categories__name', 'summary']
+    search_fields = ['title', 'author__name', 'categories__name', 'summary', 'tags__name']
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return BookDetailSerializer
+        return BookSerializer
 
 
 class BookReviewViewSet(viewsets.ModelViewSet):

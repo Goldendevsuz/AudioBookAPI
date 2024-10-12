@@ -261,8 +261,8 @@ DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = 'audiobook-50fe7.appspot.com'
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(FIREBASE_ADMIN_CREDENTIALS)
 
-Optional: Define media URL for Firebase-hosted files
-MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
+# Optional: Define media URL for Firebase-hosted files
+# MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"
 
 # looking up existing tags
 TAGGIT_CASE_INSENSITIVE = True
