@@ -10,7 +10,8 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         # fields = '__all__'
-        fields = ['poster_url', 'cover_url', 'title', 'author_name', 'release_date']
+        fields = ['poster_url', 'cover_url', 'poster', 'cover', 'title', 'author_name', 'release_date']
+        read_only_fields = ['poster_url', 'cover_url']
 
 
 class BookReviewSerializer(serializers.ModelSerializer):
