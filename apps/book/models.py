@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_extensions.db.models import TimeStampedModel
+from taggit.managers import TaggableManager
 from icecream import ic
 
 from apps.author.models import Author
@@ -23,6 +24,7 @@ class Book(TimeStampedModel):
     categories = models.ManyToManyField(Category, related_name='books')
     summary = models.TextField(max_length=3000, unique=True)
     isbn = models.CharField(max_length=13, unique=True, validators=[MinLengthValidator(13)])
+    tags = TaggableManager()
 
     # Adding pages count field for ebooks with validators for range 1-1000
     pages_count = models.PositiveSmallIntegerField(

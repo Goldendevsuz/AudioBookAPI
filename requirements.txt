@@ -9,6 +9,7 @@ django-debug-toolbar
 drf-spectacular
 drf-material
 django-redis
+django-taggit
 djangorestframework-simplejwt
 django-ratelimit
 drf-spectacular-sidecar
