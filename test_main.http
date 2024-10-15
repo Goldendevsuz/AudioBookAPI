@@ -1,0 +1,12 @@
+@baseUrl = 'http://localhost:8000/'
+
+POST 14.10.2024 22:00
+{{baseUrl}}/auth/users/
+{{baseUrl}}/auth/jwt/create/
+{{baseUrl}}/auth/users/activation/
+{{baseUrl}}/auth/users/reset_password/
+{{baseUrl}}/auth/users/reset_password_confirm/
+
+GET 15.10.2024 09:00
+{{baseUrl}}/auth/users/
+{{baseUrl}}/auth/users/me/

@@ -6,12 +6,17 @@ from apps.book.models import Book, BookReview
 
 class BookSerializer(serializers.ModelSerializer):
     author_name = serializers.CharField(source='author.name', read_only=True)
-    tags = serializers.SerializerMethodField()
+    tags = serializers.SlugRelatedField(
+        many=True,
+        slug_field='name',
+        queryset=Book.tags.model.objects.all()  # Queryset of tags
+    )
 
     class Meta:
         model = Book
         # fields = '__all__'
-        fields = ['poster_url', 'cover_url', 'title', 'author_name', 'release_date', 'rate', 'pages_count', 'tags']
+        fields = ['poster', 'cover', 'title', 'author', 'author_name', 'release_date', 'rate', 'pages_count', 'tags', 'isbn', 'summary']
+        # read_only_fields = ['']
 
     def get_tags(self, obj):
         return [tag.name for tag in obj.tags.all()]

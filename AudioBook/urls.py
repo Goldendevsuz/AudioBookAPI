@@ -27,7 +27,6 @@ urlpatterns = [
 ]
 
 api_urls = [
-    path('users/', include('apps.user.urls')),
     path('notification/', include('apps.notification.urls')),
     path('categories/', include('apps.category.urls')),
     path('books/', include('apps.book.urls')),
@@ -44,8 +43,15 @@ spectacular_urls = [
     path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
 
+auth_urls = [
+    path('auth/', include('apps.user.urls')),
+    path('auth/', include('djoser.urls.jwt')),
+    # path('auth/', include('apps.user.urls')),
+]
+
 urlpatterns += api_urls
 urlpatterns += spectacular_urls
+urlpatterns += auth_urls
 
 urlpatterns += static(local.MEDIA_URL, document_root=local.MEDIA_ROOT)
 urlpatterns += static(local.STATIC_URL, document_root=local.STATIC_ROOT)

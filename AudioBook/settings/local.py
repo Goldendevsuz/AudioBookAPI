@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -52,16 +53,17 @@ INSTALLED_APPS = [
 ]
 
 THIRD_APPS = [
-    'django_extensions',
+    "corsheaders",
     "debug_toolbar",
+    'django_celery_beat',
+    'django_celery_results',
+    'django_extensions',
+    'djoser',
     'drf_material',
-    'rest_framework',
     'drf_spectacular',
     'drf_spectacular_sidecar',
-    'djoser',
-    "corsheaders",
-    'django_celery_results',
-    'django_celery_beat',
+    'rest_framework',
+    'rest_framework_simplejwt',
     'taggit',
 ]
 
@@ -178,11 +180,17 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 DJOSER = {
+    'LOGIN_FIELD': 'email',
     'SERIALIZERS': {
         'user_create': 'apps.user.serializers.CustomUserCreateSerializer',
         'user': 'apps.user.serializers.CustomUserSerializer',
         'current_user': 'apps.user.serializers.CustomUserSerializer',
     },
+    # 'SERIALIZERS': {
+    #     'user_create': 'djoser.serializers.UserCreateSerializer',
+    #     'user': 'djoser.serializers.UserSerializer',
+    #     'current_user': 'djoser.serializers.UserSerializer',
+    # },
     'SEND_ACTIVATION_EMAIL': True,
     'ACTIVATION_URL': 'auth/confirm-email/{uid}/{token}',
     'PASSWORD_RESET_CONFIRM_URL': 'auth/password-reset-confirm/{uid}/{token}'
@@ -221,7 +229,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -235,6 +243,14 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Short-lived token for normal login
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Normal refresh token lifespan
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('JWT',),
 }
 
 SPECTACULAR_SETTINGS = {
