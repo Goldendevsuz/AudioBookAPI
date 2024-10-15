@@ -5,6 +5,7 @@ from djoser.serializers import UserCreateSerializer, UserSerializer, TokenCreate
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from apps.book.models import Book
+from apps.user.emails import generate_activation_code
 from apps.user.models import UserCategory, UserBook
 
 User = get_user_model()
@@ -86,16 +87,12 @@ class CustomTokenCreateSerializer(serializers.Serializer):
         return data
 
 
-class CustomActivationSerializer(serializers.Serializer):
+# Serializer for sending the activation code
+class SendActivationCodeSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    code = serializers.CharField(max_length=6)
 
     def validate(self, data):
         email = data.get('email')
-        code = data.get('code')
-
-        if not email or not code:
-            raise serializers.ValidationError("Both email and code are required.")
 
         # Ensure that the user exists and is not yet active
         try:
@@ -103,7 +100,23 @@ class CustomActivationSerializer(serializers.Serializer):
         except User.DoesNotExist:
             raise serializers.ValidationError("User does not exist or is already activated.")
 
-        # Perform additional custom validation on the code here (if needed)
-        # You may add logic here to validate the code dynamically or based on an external service
+        return data
 
+
+# Serializer for verifying the activation code
+class VerifyActivationCodeSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField(max_length=6)
+
+    def validate(self, data):
+        email = data.get('email')
+        code = data.get('code')
+
+        # Ensure that the user exists and is not yet active
+        try:
+            user = User.objects.get(email=email, is_active=False)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("User does not exist or is already activated.")
+
+        # You can also add custom code validation logic here
         return data

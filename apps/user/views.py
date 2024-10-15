@@ -10,10 +10,10 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
 
-from .emails import CustomActivationEmail, generate_activation_code
+from .emails import CustomActivationEmail, generate_activation_code, send_activation_email
 from .models import UserCategory, UserBook
 from .serializers import UserCategorySerializer, UserBookSerializer, CustomTokenCreateSerializer, \
-    CustomActivationSerializer
+    SendActivationCodeSerializer, VerifyActivationCodeSerializer
 
 User = get_user_model()
 
@@ -120,24 +120,40 @@ class CustomUserViewSet(UserViewSet):
 
 
 class CustomActivationView(viewsets.GenericViewSet):
-    serializer_class = CustomActivationSerializer
+    # Step 1: Send activation code to user's email
+    @action(detail=False, methods=['post'], url_path='send-activation-code', url_name='send_activation_code')
+    def send_activation_code(self, request, *args, **kwargs):
+        serializer = SendActivationCodeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-    def activation(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        email = serializer.validated_data['email']
+
+        try:
+            user = User.objects.get(email=email, is_active=False)
+
+            # Generate and send the activation code
+            activation_code = generate_activation_code()
+            send_activation_email(user, activation_code)
+
+            return Response({"detail": "Activation code sent successfully."}, status=status.HTTP_200_OK)
+
+        except User.DoesNotExist:
+            return Response({"detail": "Invalid email or user already activated."}, status=status.HTTP_404_NOT_FOUND)
+
+    # Step 2: Verify code and activate user
+    @action(detail=False, methods=['post'], url_path='verify-activation-code', url_name='verify_activation_code')
+    def verify_activation_code(self, request, *args, **kwargs):
+        serializer = VerifyActivationCodeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         email = serializer.validated_data['email']
         code = serializer.validated_data['code']
 
         try:
-            # Use get() to retrieve a single user object, not filter()
             user = User.objects.get(email=email, is_active=False)
 
-            # Generate and send the activation code via email
-            sent_code = generate_activation_code()
-            send_activation_email(user, sent_code)
-
-            # Validate the code provided by the user
+            # Verify the code sent to the user (you should implement real code validation logic)
+            sent_code = generate_activation_code()  # Replace this with real stored code
             if code == sent_code:
                 user.is_active = True
                 user.save()

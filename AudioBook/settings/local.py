@@ -260,10 +260,12 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'AudioBook',
     'DESCRIPTION': 'Mobile app API',
     'VERSION': '0.0.1',
-    'SERVE_INCLUDE_SCHEMA': False,
     'SWAGGER_UI_DIST': 'SIDECAR',
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
     'REDOC_DIST': 'SIDECAR',
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': r'/',  # Make sure all endpoints are picked up
+    'SERVE_INCLUDE_SCHEMA': True,
 }
 
 # Path to your Firebase service account key JSON file

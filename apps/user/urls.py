@@ -18,8 +18,10 @@ books_router = NestedSimpleRouter(router, r'users', lookup='user')
 books_router.register(r'books', UserBookViewSet, basename='user-books')
 
 urlpatterns = [
-    path('jwt/create/', CustomTokenCreateView.as_view(), name='jwt-create'),
-    path('users/custom_activation/', CustomActivationView.as_view({'post': 'activation'}), name='activation'),
-]
+    # path('jwt/create/', CustomTokenCreateView.as_view(), name='jwt-create'),
+    path('users/send_activation_code/', CustomActivationView.as_view({'post': 'send_activation_code'}), name='send-activation-code'),
+
+    # Second URL for verifying and activating user
+    path('users/verify_activation_code/', CustomActivationView.as_view({'post': 'verify_activation_code'}), name='verify-activation-code'),]
 # Combine all routes
 urlpatterns += router.urls + categories_router.urls + books_router.urls

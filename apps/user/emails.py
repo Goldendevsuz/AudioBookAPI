@@ -39,4 +39,7 @@ class CustomActivationEmail(ActivationEmail):
         activation_code = generate_activation_code()
 
         # Send the code via email
-        send_activation_email(user.email, activation_code)
+        print('user -------> ', user)
+        print('user -------> ', user[0])
+        send_activation_email(user[0], activation_code)
+
