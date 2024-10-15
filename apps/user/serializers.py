@@ -84,3 +84,26 @@ class CustomTokenCreateSerializer(serializers.Serializer):
         }
 
         return data
+
+
+class CustomActivationSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField(max_length=6)
+
+    def validate(self, data):
+        email = data.get('email')
+        code = data.get('code')
+
+        if not email or not code:
+            raise serializers.ValidationError("Both email and code are required.")
+
+        # Ensure that the user exists and is not yet active
+        try:
+            user = User.objects.get(email=email, is_active=False)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("User does not exist or is already activated.")
+
+        # Perform additional custom validation on the code here (if needed)
+        # You may add logic here to validate the code dynamically or based on an external service
+
+        return data

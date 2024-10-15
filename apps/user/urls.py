@@ -3,7 +3,7 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested.routers import NestedSimpleRouter
 
-from .views import CustomUserViewSet, UserCategoryViewSet, UserBookViewSet, CustomTokenCreateView
+from .views import CustomUserViewSet, UserCategoryViewSet, UserBookViewSet, CustomTokenCreateView, CustomActivationView
 
 # Root router - no need to register `users/` here, it's handled in the base urls
 router = DefaultRouter()
@@ -19,6 +19,7 @@ books_router.register(r'books', UserBookViewSet, basename='user-books')
 
 urlpatterns = [
     path('jwt/create/', CustomTokenCreateView.as_view(), name='jwt-create'),
+    path('users/custom_activation/', CustomActivationView.as_view({'post': 'activation'}), name='activation'),
 ]
 # Combine all routes
 urlpatterns += router.urls + categories_router.urls + books_router.urls

@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth import get_user_model
 from djoser.views import UserViewSet
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse
@@ -6,9 +8,12 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.views import APIView
 
+from .emails import CustomActivationEmail, generate_activation_code
 from .models import UserCategory, UserBook
-from .serializers import UserCategorySerializer, UserBookSerializer, CustomTokenCreateSerializer
+from .serializers import UserCategorySerializer, UserBookSerializer, CustomTokenCreateSerializer, \
+    CustomActivationSerializer
 
 User = get_user_model()
 
@@ -112,3 +117,33 @@ class CustomUserViewSet(UserViewSet):
             },
             status=status.HTTP_403_FORBIDDEN
         )
+
+
+class CustomActivationView(viewsets.GenericViewSet):
+    serializer_class = CustomActivationSerializer
+
+    def activation(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        email = serializer.validated_data['email']
+        code = serializer.validated_data['code']
+
+        try:
+            # Use get() to retrieve a single user object, not filter()
+            user = User.objects.get(email=email, is_active=False)
+
+            # Generate and send the activation code via email
+            sent_code = generate_activation_code()
+            send_activation_email(user, sent_code)
+
+            # Validate the code provided by the user
+            if code == sent_code:
+                user.is_active = True
+                user.save()
+                return Response({"detail": "Account activated successfully."}, status=status.HTTP_200_OK)
+            else:
+                return Response({"detail": "Invalid code."}, status=status.HTTP_400_BAD_REQUEST)
+
+        except User.DoesNotExist:
+            return Response({"detail": "Invalid email or user already activated."}, status=status.HTTP_404_NOT_FOUND)

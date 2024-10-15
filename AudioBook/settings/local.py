@@ -192,8 +192,11 @@ DJOSER = {
     #     'current_user': 'djoser.serializers.UserSerializer',
     # },
     'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': 'auth/confirm-email/{uid}/{token}',
-    'PASSWORD_RESET_CONFIRM_URL': 'auth/password-reset-confirm/{uid}/{token}'
+    # 'ACTIVATION_URL': 'auth/confirm-email/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'auth/password-reset-confirm/{uid}/{token}',
+    'EMAIL': {
+        'activation': 'apps.user.emails.CustomActivationEmail'
+    }
 }
 
 EMAIL_USE_TLS = True
